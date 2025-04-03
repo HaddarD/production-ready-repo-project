@@ -1,12 +1,21 @@
-from flask import Flask, render_template
+import os
+from flask import Flask
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 app = Flask(__name__)
 
-
-@app.route('/')
+@app.route("/")
 def home():
-    return render_template('index.html', message="Hello from Service 1!")
-
+    return f"Hello from {os.getenv('SERVICE_NAME')}!"
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5000)
+    port = os.getenv("SERVICE_PORT")
+
+    if port is None:
+        raise ValueError("SERVICE_PORT is not set in the .env file")
+
+    app.run(host="0.0.0.0", port=int(port))
+
