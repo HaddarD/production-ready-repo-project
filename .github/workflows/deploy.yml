@@ -1,0 +1,26 @@
+name: Deploy Services
+
+on:
+  push:
+    branches:
+      - develop
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Environment Variables for Service 1
+        run: |
+          echo "SERVICE_NAME=${{ secrets.SERVICE1_NAME }}" > microservices/service1/.env
+          echo "SERVICE_PORT=${{ secrets.SERVICE1_PORT }}" >> microservices/service1/.env
+
+      - name: Set up Environment Variables for Service 2
+        run: |
+          echo "SERVICE_NAME=${{ secrets.SERVICE2_NAME }}" > microservices/service2/.env
+          echo "SERVICE_PORT=${{ secrets.SERVICE2_PORT }}" >> microservices/service2/.env
